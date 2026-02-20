@@ -646,21 +646,44 @@ document.getElementById('copyMeetingId')?.addEventListener('click', () => {
     });
 });
 
-// Transcript toggle
-document.getElementById('transcriptBtn')?.addEventListener('click', () => {
+// ── Transcript Toggle (control bar btn + sidebar panel btn) ──────────────────
+const toggleTranscript = () => {
     isTranscribing = !isTranscribing;
-    document.getElementById('transcriptBtn').classList.toggle('active', isTranscribing);
-    const icon = document.getElementById('transcriptIcon');
-    if (icon) icon.textContent = isTranscribing ? '📝' : '📝';
+    console.log(`[Meeting] Transcription ${isTranscribing ? 'STARTING' : 'STOPPING'}`);
 
-    if (window.SpeechRec) {
-        isTranscribing ? window.SpeechRec.start(MEETING_ID) : window.SpeechRec.stop();
+    // Update control-bar button
+    const ctrlBtn = document.getElementById('transcriptBtn');
+    const ctrlIcon = document.getElementById('transcriptIcon');
+    if (ctrlBtn) ctrlBtn.classList.toggle('active', isTranscribing);
+    if (ctrlIcon) ctrlIcon.textContent = isTranscribing ? '🔴' : '📝';
+
+    // Update sidebar panel button
+    const panelBtn = document.getElementById('transcriptToggleBtn');
+    if (panelBtn) panelBtn.textContent = isTranscribing ? 'Stop' : 'Start';
+
+    if (isTranscribing) {
+        if (!window.SpeechRec) {
+            console.error('[Meeting] SpeechRec module not loaded — check speechRecognition.js is included before meeting.js');
+            window.SM.showToast('Speech module not loaded. Check console.', 'error');
+            isTranscribing = false;
+            return;
+        }
+        window.SpeechRec.start(MEETING_ID);
+        window.SM.showToast('🎤 Live transcription started', 'success', 2500);
+
+        // Auto-switch to AI tab so user can see transcript
+        document.querySelectorAll('.sidebar-tab').forEach((t) => t.classList.remove('active'));
+        document.querySelectorAll('.sidebar-content').forEach((c) => c.classList.remove('active'));
+        document.querySelector('[data-tab="ai"]')?.classList.add('active');
+        document.getElementById('tab-ai')?.classList.add('active');
+    } else {
+        window.SpeechRec?.stop();
+        window.SM.showToast('Transcription stopped', 'info', 2000);
     }
-    window.SM.showToast(
-        isTranscribing ? 'Live transcription started 🎤' : 'Transcription stopped',
-        'info', 2500
-    );
-});
+};
+
+document.getElementById('transcriptBtn')?.addEventListener('click', toggleTranscript);
+document.getElementById('transcriptToggleBtn')?.addEventListener('click', toggleTranscript);
 
 // Sidebar tabs
 document.querySelectorAll('.sidebar-tab').forEach((tab) => {

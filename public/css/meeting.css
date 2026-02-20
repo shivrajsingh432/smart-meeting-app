@@ -653,8 +653,11 @@
     color: var(--text-secondary);
 }
 
-.transcript-entry strong {
+.transcript-entry strong,
+.transcript-speaker {
     color: var(--primary-light);
+    font-weight: 600;
+    margin-right: 4px;
 }
 
 /* ── Controls Bar ───────────────────────────────────────────────── */

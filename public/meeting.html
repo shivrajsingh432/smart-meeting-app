@@ -100,9 +100,19 @@
                         </div>
                     </div>
                     <div class="ai-section">
-                        <h4 class="ai-section-title">🎤 Live Transcript</h4>
+                        <div
+                            style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem;">
+                            <h4 class="ai-section-title" style="margin:0;">🎤 Live Transcript</h4>
+                            <button id="transcriptToggleBtn" class="btn btn-secondary btn-sm"
+                                style="font-size:0.75rem;padding:0.25rem 0.6rem;">
+                                Start
+                            </button>
+                        </div>
+                        <div id="transcriptStatus"
+                            style="font-size:0.75rem;color:rgba(148,163,184,0.7);margin-bottom:0.4rem;min-height:1rem;">
+                        </div>
                         <div class="transcript-live" id="liveTranscript">
-                            <div class="ai-empty">Transcript starts when speaking...</div>
+                            <div class="ai-empty">Click "Start" to begin live transcription</div>
                         </div>
                     </div>
                 </div>
