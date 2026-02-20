@@ -32,17 +32,25 @@ const PORT = process.env.PORT || 5000;
 const isProd = process.env.NODE_ENV === 'production';
 
 // ── Allowed Origins ───────────────────────────────────────────────────────────
-const allowedOrigins = process.env.ALLOWED_ORIGINS
-    ? process.env.ALLOWED_ORIGINS.split(',').map((o) => o.trim())
-    : ['http://localhost:5000', 'http://localhost:3000'];
+const allowedLocal = ['http://localhost:5000', 'http://localhost:3000'];
 
 const corsOptions = {
-    origin: isProd
-        ? (origin, callback) => {
-            if (!origin || allowedOrigins.includes(origin)) callback(null, true);
-            else callback(new Error(`CORS blocked: ${origin}`));
+    origin: (origin, callback) => {
+        // Allow requests with no origin (like mobile apps, curl, postman)
+        if (!origin) return callback(null, true);
+
+        // Allow localhost development and all Render subdomains
+        const isAllowedLocal = allowedLocal.includes(origin);
+        const isRenderDeployment = origin.endsWith('.onrender.com');
+
+        if (isAllowedLocal || isRenderDeployment) {
+            callback(null, true);
+        } else {
+            // Log for debugging but block the request
+            console.warn(`[CORS] Request from blocked origin: ${origin}`);
+            callback(null, false); // Reject by passing false
         }
-        : '*',
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
