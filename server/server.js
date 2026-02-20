@@ -76,8 +76,7 @@ app.use(
     })
 );
 
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); // Preflight for all routes
+app.use(cors(corsOptions)); // Handles all routes including OPTIONS preflight
 
 // ── Body Parsers ──────────────────────────────────────────────────────────────
 app.use(express.json({ limit: '10mb' }));
