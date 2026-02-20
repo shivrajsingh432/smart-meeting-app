@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Join Meeting – SmartMeet</title>
+  <meta name="description" content="Join a SmartMeet AI-powered video meeting" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="/css/auth.css" />
+  <style>
+    .join-card {
+      max-width: 440px;
+      width: 90%;
+      margin: auto;
+      padding: 2.5rem;
+    }
+    .meeting-meta {
+      background: rgba(99, 102, 241, 0.1);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+      display: none;
+    }
+    .meeting-meta.visible { display: block; }
+    .meeting-meta .meeting-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+    .meeting-meta .meeting-host {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .meeting-meta .meeting-status-badge {
+      display: inline-block;
+      margin-top: 0.5rem;
+      padding: 0.2rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .badge-live  { background: rgba(16,185,129,0.2); color: #10b981; }
+    .badge-wait  { background: rgba(245,158,11,0.2); color: #f59e0b; }
+    .badge-ended { background: rgba(239,68,68,0.2);  color: #ef4444; }
+    .badge-lock  { background: rgba(239,68,68,0.15); color: #ef4444; }
+
+    .error-box {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      color: #fca5a5;
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+      display: none;
+    }
+    .error-box.visible { display: flex; align-items: center; gap: 0.5rem; }
+
+    .waiting-box {
+      text-align: center;
+      padding: 1.5rem;
+      background: rgba(99, 102, 241, 0.08);
+      border-radius: 12px;
+      display: none;
+    }
+    .waiting-box.visible { display: block; }
+    .waiting-box .spinner {
+      width: 40px; height: 40px;
+      border: 3px solid rgba(99,102,241,0.3);
+      border-top-color: #6366f1;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .join-form { display: block; }
+    .join-form.hidden { display: none; }
+
+    .name-input-row { margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+  <!-- Animated background -->
+  <div class="bg-animation">
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+  </div>
+
+  <nav class="navbar glass">
+    <div class="nav-brand">
+      <span class="brand-icon">🧠</span>
+      <span class="brand-name">SmartMeet</span>
+    </div>
+    <div class="nav-links" id="navLinks"></div>
+  </nav>
+
+  <div class="auth-container">
+    <div class="glass join-card">
+      <div class="auth-header">
+        <div class="auth-icon">🚪</div>
+        <h1 class="auth-title">Join Meeting</h1>
+        <p class="auth-subtitle" id="joinSubtitle">Enter the meeting ID to continue</p>
+      </div>
+
+      <!-- Meeting Info block (populated dynamically) -->
+      <div class="meeting-meta" id="meetingMeta">
+        <div class="meeting-title" id="metaMeetingTitle"></div>
+        <div class="meeting-host" id="metaMeetingHost"></div>
+        <span class="meeting-status-badge" id="metaStatusBadge"></span>
+      </div>
+
+      <!-- Error box -->
+      <div class="error-box" id="joinErrorBox">
+        <span>⚠️</span>
+        <span id="joinErrorMsg">Something went wrong.</span>
+      </div>
+
+      <!-- Waiting room box -->
+      <div class="waiting-box" id="waitingBox">
+        <div class="spinner"></div>
+        <h3>Waiting for host approval</h3>
+        <p style="color:var(--text-muted);font-size:0.875rem;">The host will admit you shortly…</p>
+      </div>
+
+      <!-- Join Form -->
+      <form class="auth-form join-form" id="joinForm">
+        <div class="form-group name-input-row" id="nameInputRow">
+          <label class="form-label" for="joinName">Your Name</label>
+          <input type="text" id="joinName" class="form-input" placeholder="How should we call you?" autocomplete="name" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="joinMeetingId">Meeting ID</label>
+          <input
+            type="text"
+            id="joinMeetingId"
+            class="form-input"
+            placeholder="ABC-1X2"
+            maxlength="8"
+            autocomplete="off"
+            style="text-transform:uppercase;letter-spacing:2px;font-size:1.1rem;"
+          />
+        </div>
+
+        <div class="form-group" id="passwordGroup" style="display:none;">
+          <label class="form-label" for="joinPassword">
+            🔒 Meeting Password
+          </label>
+          <div class="password-wrapper">
+            <input type="password" id="joinPassword" class="form-input" placeholder="Enter meeting password" />
+            <button type="button" class="password-toggle" onclick="togglePassword('joinPassword', this)">👁</button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full" id="joinBtn">
+          Join Meeting →
+        </button>
+      </form>
+
+      <p class="auth-footer">
+        Want to host instead?
+        <a href="/index.html" class="auth-link">Create a Meeting</a>
+      </p>
+    </div>
+  </div>
+
+  <script src="/js/auth.js"></script>
+  <script src="/js/joinPage.js"></script>
+</body>
+</html>

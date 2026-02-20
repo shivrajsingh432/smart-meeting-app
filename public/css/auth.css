@@ -1,0 +1,87 @@
+/* ================================================================
+   AUTH PAGES STYLES
+   ================================================================ */
+
+.auth-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 440px;
+    padding: 48px 40px;
+}
+
+.auth-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    margin-bottom: 32px;
+}
+
+.auth-title {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.auth-subtitle {
+    color: var(--text-secondary);
+    font-size: 15px;
+    margin-bottom: 36px;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.auth-switch {
+    text-align: center;
+    margin-top: 28px;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.auth-switch a {
+    color: var(--primary-light);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-switch a:hover {
+    text-decoration: underline;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper .form-input {
+    padding-right: 48px;
+}
+
+.pw-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 4px;
+    opacity: 0.6;
+    transition: var(--transition);
+}
+
+.pw-toggle:hover {
+    opacity: 1;
+}

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register – SmartMeet</title>
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/auth.css" />
+</head>
+
+<body>
+    <div class="bg-animated">
+        <div class="bg-orb bg-orb-1"></div>
+        <div class="bg-orb bg-orb-2"></div>
+        <div class="bg-orb bg-orb-3"></div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <div class="auth-wrapper">
+        <div class="auth-card glass-card">
+            <a href="/" class="auth-logo">
+                <div class="navbar-logo">🎥</div>
+                <span class="navbar-title">SmartMeet</span>
+            </a>
+            <h1 class="auth-title">Create account</h1>
+            <p class="auth-subtitle">Join SmartMeet and start smarter meetings</p>
+
+            <form class="auth-form" id="registerForm">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-input" id="name" placeholder="Your full name" required
+                        autocomplete="name" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-input" id="email" placeholder="you@example.com" required
+                        autocomplete="email" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div class="input-wrapper">
+                        <input type="password" class="form-input" id="password" placeholder="At least 6 characters"
+                            required autocomplete="new-password" />
+                        <button type="button" class="pw-toggle" id="pwToggle" title="Show/hide password">👁️</button>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg" id="registerBtn" style="width:100%;">
+                    <span id="registerBtnText">Create Account</span>
+                    <div class="spinner hidden" id="registerSpinner"></div>
+                </button>
+            </form>
+
+            <p class="auth-switch">
+                Already have an account? <a href="/login.html">Sign in →</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script src="/js/registerPage.js"></script>
+</body>
+
+</html>

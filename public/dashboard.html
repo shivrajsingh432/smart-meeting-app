@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard – SmartMeet</title>
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/dashboard.css" />
+</head>
+
+<body>
+    <div class="bg-animated">
+        <div class="bg-orb bg-orb-1"></div>
+        <div class="bg-orb bg-orb-2"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">
+            <div class="navbar-logo">🎥</div>
+            <span class="navbar-title">SmartMeet</span>
+        </a>
+        <div class="navbar-spacer"></div>
+        <div class="navbar-actions">
+            <span id="navUser" style="color: var(--text-secondary); font-size:14px;"></span>
+            <button class="btn btn-secondary btn-sm" id="logoutBtn">Logout</button>
+        </div>
+    </nav>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <div class="page-wrapper">
+        <div class="container">
+
+            <!-- Dashboard Header -->
+            <div class="dash-header">
+                <div>
+                    <h1 class="dash-title">Welcome back, <span class="text-gradient" id="dashUserName">User</span> 👋
+                    </h1>
+                    <p class="dash-subtitle">Here's your meeting analytics overview</p>
+                </div>
+                <div class="dash-actions">
+                    <button class="btn btn-primary" id="quickHostBtn">🚀 New Meeting</button>
+                    <div class="join-quick">
+                        <input type="text" class="form-input" id="quickJoinInput" placeholder="Meeting ID"
+                            style="width:180px; text-transform:uppercase;" maxlength="7" />
+                        <button class="btn btn-success" id="quickJoinBtn">Join</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-row">
+                <div class="stat-card glass-card">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-value text-gradient" id="statTotalMeetings">0</div>
+                    <div class="stat-label">Total Meetings</div>
+                </div>
+                <div class="stat-card glass-card">
+                    <div class="stat-icon">🎙️</div>
+                    <div class="stat-value text-gradient" id="statSpeaking">0m</div>
+                    <div class="stat-label">Total Speaking</div>
+                </div>
+                <div class="stat-card glass-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-value text-gradient" id="statEngagement">0%</div>
+                    <div class="stat-label">Avg Engagement</div>
+                </div>
+                <div class="stat-card glass-card">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-value text-gradient" id="statHosted">0</div>
+                    <div class="stat-label">Meetings Hosted</div>
+                </div>
+            </div>
+
+            <!-- Meeting History Tabs -->
+            <div class="dash-section">
+                <div class="dash-section-header">
+                    <h2 class="dash-section-title">Meeting History</h2>
+                    <div class="history-tabs">
+                        <button class="history-tab active" data-tab="hosted">Hosted</button>
+                        <button class="history-tab" data-tab="joined">Joined</button>
+                    </div>
+                </div>
+
+                <div class="meetings-table-wrapper glass-card">
+                    <div id="historyLoading" class="dash-loading">
+                        <div class="spinner"></div>
+                        <span>Loading meetings...</span>
+                    </div>
+                    <table class="meetings-table hidden" id="meetingsTable">
+                        <thead>
+                            <tr>
+                                <th>Meeting ID</th>
+                                <th>Host</th>
+                                <th>Date</th>
+                                <th>Duration</th>
+                                <th>Participants</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="meetingsBody"></tbody>
+                    </table>
+                    <div class="dash-empty hidden" id="noMeetings">
+                        <div class="empty-icon">📭</div>
+                        <p>No meetings yet. Start or join one!</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script src="/js/dashboard.js"></script>
+</body>
+
+</html>

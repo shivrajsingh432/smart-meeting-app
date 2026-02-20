@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meeting Room – SmartMeet</title>
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/meeting.css" />
+</head>
+
+<body class="meeting-body">
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Meeting Layout -->
+    <div class="meeting-layout">
+
+        <!-- Top Bar -->
+        <header class="meeting-header">
+            <div class="meeting-header-left">
+                <div class="navbar-logo">🎥</div>
+                <div class="meeting-info">
+                    <span class="meeting-id-label">Meeting ID:</span>
+                    <span class="meeting-id-value" id="meetingIdDisplay">---</span>
+                    <button class="btn-copy" id="copyMeetingId" title="Copy meeting ID">📋</button>
+                </div>
+            </div>
+            <div class="meeting-timer" id="meetingTimer">
+                <span class="timer-icon">🔴</span>
+                <span id="timerDisplay">00:00:00</span>
+            </div>
+            <div class="meeting-header-right">
+                <span class="participant-count">
+                    <span class="participant-icon">👥</span>
+                    <span id="participantCount">1</span>
+                </span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="meeting-main">
+
+            <!-- Video Grid -->
+            <div class="video-area" id="videoArea">
+                <div class="video-grid" id="videoGrid">
+                    <!-- Local video tile (added by JS) -->
+                </div>
+
+                <!-- Active Speaker Highlight Name -->
+                <div class="active-speaker-banner hidden" id="activeSpeakerBanner">
+                    <span id="activeSpeakerName">Speaking...</span>
+                </div>
+
+                <!-- Screen Share View -->
+                <div class="screen-share-view hidden" id="screenShareView">
+                    <video id="screenShareVideo" autoplay playsinline muted></video>
+                    <div class="screen-share-info">
+                        <span id="screenSharerName">Screen Share</span>
+                        <button class="btn btn-danger btn-sm" id="stopScreenShareBtn">Stop Sharing</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar" id="sidebar">
+                <!-- Sidebar Tabs -->
+                <div class="sidebar-tabs">
+                    <button class="sidebar-tab active" data-tab="chat">💬 Chat</button>
+                    <button class="sidebar-tab" data-tab="participants">👥 People</button>
+                    <button class="sidebar-tab" data-tab="ai">🧠 AI</button>
+                </div>
+
+                <!-- Chat Tab -->
+                <div class="sidebar-content active" id="tab-chat">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="chat-empty">No messages yet. Say hello! 👋</div>
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text" class="form-input chat-input" id="chatInput" placeholder="Type a message..."
+                            maxlength="500" />
+                        <button class="btn btn-primary btn-icon" id="sendChatBtn" title="Send">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M2 21l21-9L2 3v7l15 2-15 2v7z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Participants Tab -->
+                <div class="sidebar-content" id="tab-participants">
+                    <div class="participants-list" id="participantsList"></div>
+                </div>
+
+                <!-- AI Insights Tab -->
+                <div class="sidebar-content" id="tab-ai">
+                    <div class="ai-section">
+                        <h4 class="ai-section-title">📊 Live Engagement</h4>
+                        <div class="engagement-list" id="engagementList">
+                            <div class="ai-empty">Engagement data will appear here...</div>
+                        </div>
+                    </div>
+                    <div class="ai-section">
+                        <h4 class="ai-section-title">🎤 Live Transcript</h4>
+                        <div class="transcript-live" id="liveTranscript">
+                            <div class="ai-empty">Transcript starts when speaking...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Control Bar -->
+        <footer class="controls-bar">
+            <div class="controls-left">
+                <!-- Mute / Unmute -->
+                <div class="control-group">
+                    <button class="control-btn active" id="muteBtn" title="Mute/Unmute mic">
+                        <span class="control-icon" id="muteIcon">🎙️</span>
+                    </button>
+                    <span class="control-label">Mute</span>
+                </div>
+
+                <!-- Camera toggle -->
+                <div class="control-group">
+                    <button class="control-btn active" id="cameraBtn" title="Toggle camera">
+                        <span class="control-icon" id="cameraIcon">📹</span>
+                    </button>
+                    <span class="control-label">Camera</span>
+                </div>
+
+                <!-- Screen Share -->
+                <div class="control-group">
+                    <button class="control-btn" id="screenShareBtn" title="Share screen">
+                        <span class="control-icon">🖥️</span>
+                    </button>
+                    <span class="control-label">Share</span>
+                </div>
+
+                <!-- Raise Hand -->
+                <div class="control-group">
+                    <button class="control-btn" id="raiseHandBtn" title="Raise hand">
+                        <span class="control-icon" id="handIcon">✋</span>
+                    </button>
+                    <span class="control-label">Hand</span>
+                </div>
+
+                <!-- Chat toggle -->
+                <div class="control-group">
+                    <button class="control-btn" id="chatToggleBtn" title="Toggle chat">
+                        <span class="control-icon">💬</span>
+                    </button>
+                    <span class="control-label">Chat</span>
+                </div>
+            </div>
+
+            <div class="controls-center">
+                <!-- Leave / End Meeting -->
+                <button class="btn btn-danger control-leave" id="leaveBtn">
+                    <span>Leave Meeting</span>
+                </button>
+                <button class="btn btn-danger control-end hidden" id="endMeetingBtn">
+                    <span>⏹ End for All</span>
+                </button>
+            </div>
+
+            <div class="controls-right">
+                <!-- Transcript toggle -->
+                <div class="control-group">
+                    <button class="control-btn" id="transcriptBtn" title="Toggle transcription">
+                        <span class="control-icon" id="transcriptIcon">📝</span>
+                    </button>
+                    <span class="control-label">Transcript</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Leave Confirmation Modal -->
+    <div class="modal-overlay hidden" id="leaveModal">
+        <div class="modal glass-card">
+            <h3>Leave Meeting?</h3>
+            <p>Are you sure you want to leave this meeting?</p>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" id="cancelLeave">Cancel</button>
+                <button class="btn btn-danger" id="confirmLeave">Leave</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/engagement.js"></script>
+    <script src="/js/speechRecognition.js"></script>
+    <script src="/js/meeting.js"></script>
+</body>
+
+</html>

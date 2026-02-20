@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meeting Summary – SmartMeet</title>
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/summary.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+
+<body>
+    <div class="bg-animated">
+        <div class="bg-orb bg-orb-1"></div>
+        <div class="bg-orb bg-orb-2"></div>
+    </div>
+
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">
+            <div class="navbar-logo">🎥</div>
+            <span class="navbar-title">SmartMeet</span>
+        </a>
+        <div class="navbar-spacer"></div>
+        <div class="navbar-actions">
+            <a href="/dashboard.html" class="btn btn-secondary btn-sm">← Dashboard</a>
+            <button class="btn btn-primary btn-sm" id="downloadPdfBtn">⬇ Download PDF</button>
+        </div>
+    </nav>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <div class="page-wrapper" id="summaryPage">
+        <div class="container">
+
+            <!-- Loading State -->
+            <div class="summary-loading" id="summaryLoading">
+                <div class="spinner" style="width:48px; height:48px; border-width:4px;"></div>
+                <h3>Generating AI Summary...</h3>
+                <p>Analyzing your meeting transcript and engagement data</p>
+            </div>
+
+            <!-- Summary Content (hidden until loaded) -->
+            <div class="hidden" id="summaryContent">
+
+                <!-- Meeting Overview -->
+                <div class="summary-header">
+                    <div>
+                        <div class="badge badge-success" style="margin-bottom:12px;">✅ Meeting Complete</div>
+                        <h1 class="summary-title">Meeting Summary</h1>
+                        <p class="summary-meta">
+                            <span id="sumMeetingId" class="badge badge-primary">---</span>
+                            <span id="sumDate" class="summary-meta-item">📅 ---</span>
+                            <span id="sumDuration" class="summary-meta-item">⏱ ---</span>
+                            <span id="sumParticipants" class="summary-meta-item">👥 ---</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Stats Row -->
+                <div class="summary-stats">
+                    <div class="sum-stat glass-card">
+                        <div class="sum-stat-val text-gradient" id="sumTotalParticipants">0</div>
+                        <div class="sum-stat-label">Participants</div>
+                    </div>
+                    <div class="sum-stat glass-card">
+                        <div class="sum-stat-val text-gradient" id="sumDurationStat">0m</div>
+                        <div class="sum-stat-label">Duration</div>
+                    </div>
+                    <div class="sum-stat glass-card">
+                        <div class="sum-stat-val text-gradient" id="sumTopEngagement">0%</div>
+                        <div class="sum-stat-label">Top Engagement</div>
+                    </div>
+                    <div class="sum-stat glass-card">
+                        <div class="sum-stat-val text-gradient" id="sumChatCount">0</div>
+                        <div class="sum-stat-label">Chat Messages</div>
+                    </div>
+                </div>
+
+                <div class="summary-grid">
+
+                    <!-- Left Column -->
+                    <div class="summary-col-main">
+
+                        <!-- AI Summary -->
+                        <div class="glass-card summary-section">
+                            <h2 class="summary-section-title">🧠 AI Meeting Summary</h2>
+                            <p class="summary-text" id="aiSummaryText">Loading...</p>
+                        </div>
+
+                        <!-- Structured Summary -->
+                        <div class="structured-row">
+                            <div class="glass-card structured-card">
+                                <h3 class="structured-title">✅ Key Decisions</h3>
+                                <ul class="structured-list" id="keyDecisions"></ul>
+                            </div>
+                            <div class="glass-card structured-card">
+                                <h3 class="structured-title">📋 Action Items</h3>
+                                <ul class="structured-list" id="actionItems"></ul>
+                            </div>
+                            <div class="glass-card structured-card">
+                                <h3 class="structured-title">💡 Key Points</h3>
+                                <ul class="structured-list" id="keyPoints"></ul>
+                            </div>
+                        </div>
+
+                        <!-- Full Transcript -->
+                        <div class="glass-card summary-section">
+                            <div class="summary-section-header">
+                                <h2 class="summary-section-title">📄 Full Transcript</h2>
+                                <button class="btn btn-secondary btn-sm" id="toggleTranscript">Show Full</button>
+                            </div>
+                            <div class="transcript-container collapsed" id="transcriptContainer">
+                                <div id="transcriptContent" class="transcript-text">Loading transcript...</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right Column: Analytics -->
+                    <div class="summary-col-side">
+
+                        <!-- Engagement Chart -->
+                        <div class="glass-card summary-section">
+                            <h2 class="summary-section-title">📊 Engagement Scores</h2>
+                            <canvas id="engagementChart" height="300"></canvas>
+                        </div>
+
+                        <!-- Contribution Chart -->
+                        <div class="glass-card summary-section">
+                            <h2 class="summary-section-title">🎤 Contribution</h2>
+                            <canvas id="contributionChart" height="260"></canvas>
+                        </div>
+
+                        <!-- Leaderboard -->
+                        <div class="glass-card summary-section">
+                            <h2 class="summary-section-title">🏆 Leaderboard</h2>
+                            <div class="leaderboard" id="leaderboard"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script src="/js/charts.js"></script>
+    <script src="/js/summary.js"></script>
+</body>
+
+</html>

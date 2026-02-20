@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartMeet – AI-Powered Video Conferencing</title>
+  <meta name="description"
+    content="Next-gen video conferencing with real-time AI insights, engagement scoring, and automated meeting summaries." />
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="/css/home.css" />
+</head>
+
+<body>
+  <!-- Animated Background -->
+  <div class="bg-animated">
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a href="/" class="navbar-brand">
+      <div class="navbar-logo">🎥</div>
+      <span class="navbar-title">SmartMeet</span>
+    </a>
+    <div class="navbar-spacer"></div>
+    <div class="navbar-actions" id="navActions">
+      <a href="/login.html" class="btn btn-secondary btn-sm">Login</a>
+      <a href="/register.html" class="btn btn-primary btn-sm">Get Started</a>
+    </div>
+    <!-- Shown when logged in -->
+    <div class="navbar-actions hidden" id="navActionsLoggedIn">
+      <a href="/dashboard.html" class="btn btn-secondary btn-sm">Dashboard</a>
+      <div class="user-avatar" id="userAvatar" title="Profile">U</div>
+      <button class="btn btn-secondary btn-sm" id="logoutBtn">Logout</button>
+    </div>
+  </nav>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge badge-primary">✨ AI-Powered</span>
+        <span class="hero-badge-text">Smart Meeting Platform</span>
+      </div>
+      <h1 class="hero-title">
+        Video Meetings<br />
+        <span class="text-gradient">Reimagined with AI</span>
+      </h1>
+      <p class="hero-description">
+        Experience next-gen conferencing with real-time engagement scores,
+        automatic transcription, AI-generated summaries, and contribution analytics.
+      </p>
+
+      <!-- Action Cards -->
+      <div class="action-cards" id="actionSection">
+        <!-- Host Meeting Card -->
+        <div class="action-card glass-card">
+          <div class="action-card-icon">🚀</div>
+          <h3>Host a Meeting</h3>
+          <p>Start instantly and invite your team with a unique meeting ID.</p>
+          <button class="btn btn-primary btn-lg" id="hostBtn">
+            <span>Start New Meeting</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Join Meeting Card -->
+        <div class="action-card glass-card">
+          <div class="action-card-icon">🔗</div>
+          <h3>Join a Meeting</h3>
+          <p>Enter the meeting ID shared by your host to join instantly.</p>
+          <div class="join-form">
+            <input type="text" class="form-input" id="joinInput" placeholder="Enter Meeting ID (e.g. ABC-1X2)"
+              maxlength="8" style="text-transform:uppercase;letter-spacing:2px;" />
+            <button class="btn btn-success btn-lg" id="joinBtn">
+              <span>Join Meeting</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="container">
+      <div class="section-header text-center">
+        <h2 class="section-title">Everything You Need for<br /><span class="text-gradient">Smarter Meetings</span></h2>
+        <p class="section-subtitle">Powered by cutting-edge AI and real-time analytics</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card glass-card">
+          <div class="feature-icon">🎤</div>
+          <h3>AI Transcription</h3>
+          <p>Automatic speech-to-text powered by OpenAI Whisper. Every word captured, every speaker identified.</p>
+        </div>
+        <div class="feature-card glass-card">
+          <div class="feature-icon">🧠</div>
+          <h3>Smart Summaries</h3>
+          <p>AI generates comprehensive meeting summaries with key decisions, action items, and highlights.</p>
+        </div>
+        <div class="feature-card glass-card">
+          <div class="feature-icon">📊</div>
+          <h3>Engagement Score</h3>
+          <p>Real-time engagement metrics track speaking time, camera usage, and participation levels.</p>
+        </div>
+        <div class="feature-card glass-card">
+          <div class="feature-icon">🏆</div>
+          <h3>Contribution Ranking</h3>
+          <p>Live leaderboard showing who's contributing most with detailed contribution breakdowns.</p>
+        </div>
+        <div class="feature-card glass-card">
+          <div class="feature-icon">🖥️</div>
+          <h3>Screen Sharing</h3>
+          <p>Share your screen instantly with one click. Present ideas with crystal clarity.</p>
+        </div>
+        <div class="feature-card glass-card">
+          <div class="feature-icon">💬</div>
+          <h3>Live Chat</h3>
+          <p>Built-in chat sidebar for side conversations without interrupting the main discussion.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats-section">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-card glass-card">
+          <div class="stat-value text-gradient">99%</div>
+          <div class="stat-label">Transcription Accuracy</div>
+        </div>
+        <div class="stat-card glass-card">
+          <div class="stat-value text-gradient">HD</div>
+          <div class="stat-label">Video Quality</div>
+        </div>
+        <div class="stat-card glass-card">
+          <div class="stat-value text-gradient">&lt;1s</div>
+          <div class="stat-label">Latency</div>
+        </div>
+        <div class="stat-card glass-card">
+          <div class="stat-value text-gradient">∞</div>
+          <div class="stat-label">Participants</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="flex items-center justify-between" style="flex-wrap: wrap; gap: 16px;">
+        <a href="/" class="navbar-brand">
+          <div class="navbar-logo">🎥</div>
+          <span class="navbar-title">SmartMeet</span>
+        </a>
+        <p class="footer-copy">© 2026 SmartMeet. Built with ❤️ and AI.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── Meeting Created Modal ─────────────────────────────────────────── -->
+  <div id="modalOverlay"
+    style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);z-index:1000;display:none;align-items:center;justify-content:center;">
+    <div class="glass" style="max-width:480px;width:90%;padding:2.5rem;border-radius:20px;position:relative;">
+      <button id="modalCloseBtn"
+        style="position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--text-muted);font-size:1.5rem;cursor:pointer;">✕</button>
+
+      <div style="text-align:center;margin-bottom:1.5rem;">
+        <div style="font-size:3rem;margin-bottom:0.5rem;">🎉</div>
+        <h2 style="margin:0 0 0.25rem;">Meeting Created!</h2>
+        <p style="color:var(--text-muted);font-size:0.9rem;">Share these details with your participants</p>
+      </div>
+
+      <!-- Meeting ID -->
+      <div
+        style="background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.3);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1rem;">
+        <div
+          style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.35rem;">
+          Meeting ID</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;">
+          <span id="modalMeetingId"
+            style="font-size:1.6rem;font-weight:700;letter-spacing:4px;color:var(--primary);"></span>
+          <button onclick="copyToClipboard('modalMeetingId',this)" class="btn btn-secondary btn-sm">📋 Copy</button>
+        </div>
+      </div>
+
+      <!-- Password (if set) -->
+      <div id="modalPasswordArea"
+        style="display:none;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1rem;">
+        <div style="font-size:0.75rem;color:#f59e0b;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.35rem;">
+          🔒 Password</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;">
+          <span id="modalPassword" style="font-size:1.1rem;font-weight:600;letter-spacing:2px;"></span>
+          <button onclick="copyToClipboard('modalPassword',this)" class="btn btn-secondary btn-sm">📋 Copy</button>
+        </div>
+      </div>
+
+      <!-- Invite Link -->
+      <div
+        style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem;">
+        <div style="font-size:0.75rem;color:#10b981;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.35rem;">
+          Invite Link</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;">
+          <span id="modalInviteLink" style="font-size:0.8rem;color:var(--text-muted);word-break:break-all;"></span>
+          <button onclick="copyToClipboard('modalInviteLink',this)" class="btn btn-secondary btn-sm"
+            style="flex-shrink:0;">📋</button>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:0.75rem;">
+        <button onclick="shareInvite()" class="btn btn-secondary" style="flex:1;">📤 Share</button>
+        <button id="modalJoinNowBtn" class="btn btn-primary" style="flex:1;">Join Now →</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/auth.js"></script>
+  <script src="/js/home.js"></script>
+</body>
+
+</html>

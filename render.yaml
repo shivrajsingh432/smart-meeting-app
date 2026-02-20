@@ -1,0 +1,26 @@
+# SmartMeet – Render Deployment Config
+services:
+  - type: web
+    name: smartmeet
+    env: node
+    region: oregon
+    plan: free          # Change to 'starter' for always-on (no sleep)
+    rootDir: server
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        sync: false       # Set in Render dashboard — never hardcode
+      - key: JWT_SECRET
+        sync: false
+      - key: HUGGINGFACE_API_KEY
+        sync: false
+      - key: APP_URL
+        sync: false       # Set to https://your-app-name.onrender.com
+      - key: ALLOWED_ORIGINS
+        sync: false       # Same as APP_URL

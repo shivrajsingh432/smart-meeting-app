@@ -1,0 +1,7 @@
+.env
+.env.production
+node_modules/
+uploads/
+*.log
+.DS_Store
+Thumbs.db
