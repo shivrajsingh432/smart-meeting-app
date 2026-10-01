@@ -28,7 +28,7 @@ const createMeeting = async (req, res) => {
         // Build meeting data
         const meetingData = {
             meetingId,
-            title: title || 'SmartMeet Session',
+            title: title || 'Meetrix Session',
             host: req.user._id,
             waitingRoomEnabled,
             expiresAt,

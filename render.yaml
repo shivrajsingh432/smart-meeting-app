@@ -1,7 +1,7 @@
-# SmartMeet – Render Deployment Config
+# Meetrix – Render Deployment Config
 services:
   - type: web
-    name: smartmeet
+    name: meetrix
     env: node
     region: oregon
     plan: free          # Change to 'starter' for always-on (no sleep)

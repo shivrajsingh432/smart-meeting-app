@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // ── Page Title ────────────────────────────────────────────────────────
-    document.title = `Summary – ${meeting.meetingId} – SmartMeet`;
+    document.title = `Summary – ${meeting.meetingId} – Meetrix`;
 
     // ── PDF Download ─────────────────────────────────────────────────────
     document.getElementById('downloadPdfBtn')?.addEventListener('click', () => downloadPDF(meeting, summary, analytics));
@@ -148,7 +148,7 @@ const downloadPDF = (meeting, summary, analytics) => {
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(22);
     doc.setFont('helvetica', 'bold');
-    doc.text('SmartMeet – Meeting Summary', margin, 18);
+    doc.text('Meetrix – Meeting Summary', margin, 18);
     doc.setFontSize(11);
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(180, 180, 220);
@@ -219,6 +219,6 @@ const downloadPDF = (meeting, summary, analytics) => {
             y += lineH - 1;
         });
 
-    doc.save(`SmartMeet_${meeting.meetingId}_Summary.pdf`);
+    doc.save(`Meetrix_${meeting.meetingId}_Summary.pdf`);
     window.SM.showToast('PDF downloaded!', 'success');
 };

@@ -55,7 +55,7 @@ const hostMeeting = async () => {
 
     try {
         const { ok, data } = await window.SM.apiRequest('POST', '/meetings/create', {
-            title: 'SmartMeet Session',
+            title: 'Meetrix Session',
             expiryHours: 24,
         });
 
@@ -119,13 +119,13 @@ window.shareInvite = async () => {
     const id = document.getElementById('modalMeetingId')?.textContent;
     if (navigator.share) {
         await navigator.share({
-            title: 'Join my SmartMeet',
+            title: 'Join my Meetrix',
             text: `Join my AI-powered meeting! ID: ${id}`,
             url: link,
         });
     } else {
         await navigator.clipboard.writeText(
-            `Join my SmartMeet!\nMeeting ID: ${id}\nLink: ${link}`
+            `Join my Meetrix!\nMeeting ID: ${id}\nLink: ${link}`
         );
         window.SM?.showToast('Invite copied to clipboard!', 'success');
     }

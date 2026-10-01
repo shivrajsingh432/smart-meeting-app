@@ -1,5 +1,5 @@
 /**
- * 🚀 Smart Meeting App – Main Server Entry Point (Production Ready)
+ * 🚀 Meetrix – Main Server Entry Point (Production Ready)
  * Added: helmet, production CORS, dynamic base URL, global error logger
  */
 
@@ -164,7 +164,7 @@ server.listen(PORT, () => {
     const baseUrl = process.env.APP_URL || `http://localhost:${PORT}`;
     console.log('');
     console.log('╔══════════════════════════════════════════════╗');
-    console.log('║  🚀 Smart Meeting App – Server Started  v2    ║');
+    console.log('║  🚀 Meetrix – Server Started  v2               ║');
     console.log(`║  📡 URL: ${baseUrl.padEnd(35)}║`);
     console.log(`║  🌱 Environment: ${(process.env.NODE_ENV || 'development').padEnd(27)}║`);
     console.log('╚══════════════════════════════════════════════╝');

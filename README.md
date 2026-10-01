@@ -1,4 +1,4 @@
-# 🚀 SmartMeet – AI-Powered Video Conferencing App
+# 🚀 Meetrix – AI-Powered Video Conferencing App
 
 A production-ready, full-stack video conferencing app with real-time WebRTC, Socket.io signaling, Hugging Face AI (transcription + summarization), and live engagement analytics.
 
@@ -57,7 +57,7 @@ HUGGINGFACE_API_KEY=hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 **Getting your keys:**
-- **MongoDB URI**: Create a free cluster at [mongodb.com/atlas](https://mongodb.com/atlas) → Connect → Drivers → copy URI
+- **MongoDB URI**: Create a free cluster at [mongodb.com/atlas](https://mongodb.com/atlas) → Connect → Drivers → copy URI (use database name: `meetrix`)
 - **HF API Key**: [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens) → New Token → Read
 
 ### 4. Start the Server
