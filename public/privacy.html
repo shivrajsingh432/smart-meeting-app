@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy – Meetrix</title>
+  <meta name="description" content="Privacy Policy for Meetrix AI-powered video conferencing platform." />
+  <link rel="stylesheet" href="/css/main.css" />
+  <style>
+    .legal-container {
+      max-width: 860px;
+      margin: 100px auto 60px;
+      padding: 40px;
+    }
+
+    .legal-section {
+      margin-bottom: 32px;
+    }
+
+    .legal-section h2 {
+      font-size: 1.4rem;
+      color: var(--primary-light);
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--glass-border);
+      padding-bottom: 8px;
+    }
+
+    .legal-section p,
+    .legal-section li {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    .legal-section ul {
+      padding-left: 24px;
+      margin-top: 8px;
+    }
+
+    .legal-section li {
+      margin-bottom: 8px;
+    }
+
+    .placeholder-notice {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: #fbbf24;
+      font-size: 0.9rem;
+      margin: 16px 0;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Animated Background -->
+  <div class="bg-animated">
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a href="/" class="navbar-brand">
+      <div class="navbar-logo">🎥</div>
+      <span class="navbar-title">Meetrix</span>
+    </a>
+    <div class="navbar-spacer"></div>
+    <div class="navbar-actions">
+      <a href="/" class="btn btn-secondary btn-sm">Home</a>
+      <a href="/login.html" class="btn btn-secondary btn-sm">Login</a>
+      <a href="/register.html" class="btn btn-primary btn-sm">Get Started</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="glass-card legal-container">
+      <h1 class="text-gradient" style="margin-bottom: 8px;">Privacy Policy</h1>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 24px;">
+        Last Updated: October 11, 2026 &bull; Effective Immediately
+      </p>
+
+      <div class="legal-section">
+        <h2>1. About Meetrix</h2>
+        <p>
+          Meetrix is an independent, open-source video conferencing web application designed to facilitate real-time peer-to-peer audio and video communication, AI-assisted transcription, and meeting engagement analytics.
+        </p>
+      </div>
+
+      <div class="legal-section">
+        <h2>2. Data We Collect and Process</h2>
+        <p>Meetrix collects only the data necessary to provide meeting room functionality and user accounts:</p>
+        <ul>
+          <li>
+            <strong>Account Information:</strong> When you register an account, we collect your full name, email address, and password. Passwords are cryptographically hashed using <code>bcryptjs</code> (with 12 salt rounds) prior to storage in our database. We never store, log, or have access to plaintext passwords.
+          </li>
+          <li>
+            <strong>Meeting Identifiers & Metadata:</strong> When a meeting is created, we generate an alphanumeric meeting identifier (e.g., <code>ABC-1X2</code>), record meeting titles, host identifier, participant list, start time, end time, and duration.
+          </li>
+          <li>
+            <strong>Audio & Video Streams (WebRTC):</strong> Live audio and video are transmitted directly between participants peer-to-peer using WebRTC technology. <strong>Raw audio and video streams are not recorded or saved on our servers.</strong> Public Google STUN servers (<code>stun:stun.l.google.com:19302</code>) are utilized solely to establish initial peer-to-peer network routing.
+          </li>
+          <li>
+            <strong>Transcription & Meeting Summaries:</strong> When the transcription feature is enabled, speech is transcribed in the browser using the Web Speech API, or processed via temporary audio buffer uploads to the Hugging Face Inference API. Any temporary audio files generated on our server are permanently deleted immediately upon transcription completion (via <code>fs.unlinkSync</code>). Resulting text transcripts and AI-generated meeting summaries are associated with the meeting record.
+          </li>
+          <li>
+            <strong>Engagement Metrics:</strong> The client-side application analyzes microphone activity and participant participation state to compute anonymized engagement and speaking-time statistics.
+          </li>
+        </ul>
+      </div>
+
+      <div class="legal-section">
+        <h2>3. Third-Party Services</h2>
+        <p>Meetrix interfaces with the following third-party infrastructure providers:</p>
+        <ul>
+          <li><strong>MongoDB Atlas:</strong> Cloud database provider for persistent storage of account records, meeting metadata, transcripts, and engagement statistics.</li>
+          <li><strong>Hugging Face Inference API:</strong> Used for processing speech-to-text transcription (Whisper model) and meeting summaries (BART model).</li>
+          <li><strong>Google STUN Servers:</strong> Used solely for WebRTC network NAT traversal.</li>
+          <li><strong>Content Delivery Networks:</strong> Cloud CDNs (cdnjs, jsDelivr, socket.io) deliver frontend utility libraries.</li>
+        </ul>
+        <p>
+          Meetrix is an independent project and is not affiliated with, sponsored by, or endorsed by OpenAI, Google LLC, Zoom Video Communications, or Hugging Face.
+        </p>
+      </div>
+
+      <div class="legal-section">
+        <h2>4. Data Retention and Auto-Deletion</h2>
+        <p>
+          Meeting records, transcripts, summaries, and associated engagement metrics are scheduled to auto-expire (default: 24 hours from creation) using automated database Time-To-Live (TTL) indexes. Expired meetings are purged automatically by the database engine.
+        </p>
+      </div>
+
+      <div class="legal-section">
+        <h2>5. Cookies & Local Storage</h2>
+        <p>
+          Meetrix uses browser <code>localStorage</code> solely to maintain your authentication session token (JSON Web Token) and meeting preferences. We do not use advertising, tracking, or third-party behavioral cookies.
+        </p>
+      </div>
+
+      <div class="legal-section">
+        <h2>6. Developer Contact & Inquiries</h2>
+        <p>
+          For privacy inquiries, account removal requests, or questions regarding this independent project, please contact:
+        </p>
+        <div class="placeholder-notice" style="background: rgba(99, 102, 241, 0.1); border-color: rgba(99, 102, 241, 0.3); color: var(--text-primary);">
+          <strong>Contact Information:</strong><br />
+          Project Operator: Shivraj Singh<br />
+          Email: <a href="mailto:shivrajsingh55444@gmail.com" style="color: var(--primary-light); text-decoration: underline;">shivrajsingh55444@gmail.com</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="flex items-center justify-between" style="flex-wrap: wrap; gap: 16px;">
+        <a href="/" class="navbar-brand">
+          <div class="navbar-logo">🎥</div>
+          <span class="navbar-title">Meetrix</span>
+        </a>
+        <div style="display: flex; gap: 16px; font-size: 0.9rem;">
+          <a href="/privacy.html" style="color: var(--text-primary); text-decoration: underline;">Privacy Policy</a>
+          <a href="/terms.html" style="color: var(--text-secondary); text-decoration: underline;">Terms of Service</a>
+        </div>
+        <p class="footer-copy">© 2026 Meetrix. Independent open-source project.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>

@@ -1,0 +1,144 @@
+/**
+ * Automated Safety & Regression Test Suite for Meetrix
+ * Tests routing, privacy & terms pages, valid/invalid meeting IDs, 404 handling, and API health.
+ */
+
+const { test, describe, before, after } = require('node:test');
+const assert = require('node:assert');
+const http = require('node:http');
+
+// Set test environment before requiring server
+process.env.NODE_ENV = 'test';
+process.env.JWT_SECRET = process.env.JWT_SECRET || 'test_jwt_secret_for_routes';
+
+const { app, server } = require('../server');
+
+let baseUrl = '';
+
+before(async () => {
+    await new Promise((resolve) => {
+        server.listen(0, () => {
+            const port = server.address().port;
+            baseUrl = `http://127.0.0.1:${port}`;
+            resolve();
+        });
+    });
+});
+
+after(async () => {
+    await new Promise((resolve) => server.close(resolve));
+});
+
+const get = async (path) => {
+    const res = await fetch(`${baseUrl}${path}`);
+    const text = await res.text();
+    return { status: res.status, headers: res.headers, text };
+};
+
+describe('Meetrix Security & Route Tests', () => {
+
+    test('Homepage (GET /) serves 200 with verification tag and legal links', async () => {
+        const res = await get('/');
+        assert.strictEqual(res.status, 200);
+        assert.ok(res.text.includes('Meetrix'));
+        assert.ok(res.text.includes('google-site-verification'));
+        assert.ok(res.text.includes('qEfjVSaf-S1HW1p82R_QksuueKtWnukKw8QS1qLXcZM'));
+        assert.ok(res.text.includes('href="/privacy.html"'));
+        assert.ok(res.text.includes('href="/terms.html"'));
+        assert.ok(res.text.includes('WebRTC Direct Media'));
+        assert.ok(!res.text.includes('∞')); // Exaggerated stats removed
+    });
+
+    test('Privacy Policy page (GET /privacy.html and /privacy) serves 200 with accurate disclosures', async () => {
+        for (const p of ['/privacy.html', '/privacy']) {
+            const res = await get(p);
+            assert.strictEqual(res.status, 200);
+            assert.ok(res.text.includes('Privacy Policy'));
+            assert.ok(res.text.includes('WebRTC'));
+            assert.ok(res.text.includes('bcrypt'));
+            assert.ok(res.text.includes('shivrajsingh55444@gmail.com'));
+            assert.ok(res.text.includes('Shivraj Singh'));
+        }
+    });
+
+    test('Terms of Service page (GET /terms.html and /terms) serves 200 with acceptable use and disclaimers', async () => {
+        for (const p of ['/terms.html', '/terms']) {
+            const res = await get(p);
+            assert.strictEqual(res.status, 200);
+            assert.ok(res.text.includes('Terms of Service'));
+            assert.ok(res.text.includes('Acceptable Use'));
+            assert.ok(res.text.includes('shivrajsingh55444@gmail.com'));
+            assert.ok(res.text.includes('Shivraj Singh'));
+        }
+    });
+
+    test('Login and Register pages contain working Privacy and Terms links', async () => {
+        for (const p of ['/login.html', '/login', '/register.html', '/register']) {
+            const res = await get(p);
+            assert.strictEqual(res.status, 200);
+            assert.ok(res.text.includes('/privacy.html'));
+            assert.ok(res.text.includes('/terms.html'));
+        }
+    });
+
+    test('Meeting join page (GET /join.html and /join) contains working Privacy and Terms links', async () => {
+        for (const p of ['/join.html', '/join']) {
+            const res = await get(p);
+            assert.strictEqual(res.status, 200);
+            assert.ok(res.text.includes('/privacy.html'));
+            assert.ok(res.text.includes('/terms.html'));
+        }
+    });
+
+    test('Valid meeting ID format (GET /join/ABC-1X2) serves 200 join.html', async () => {
+        const res = await get('/join/ABC-1X2');
+        assert.strictEqual(res.status, 200);
+        assert.ok(res.text.includes('Join Meeting'));
+    });
+
+    test('Valid meeting ID without hyphen (GET /join/GBK7M2) serves 200 join.html', async () => {
+        const res = await get('/join/GBK7M2');
+        assert.strictEqual(res.status, 200);
+        assert.ok(res.text.includes('Join Meeting'));
+    });
+
+    test('Invalid meeting IDs return 404 (do not render deceptive join form)', async () => {
+        const invalidIds = ['/join/zoom', '/join/123', '/join/fake-login', '/join/microsoft', '/join/abc'];
+        for (const url of invalidIds) {
+            const res = await get(url);
+            assert.strictEqual(res.status, 404, `Expected 404 for ${url}, got ${res.status}`);
+            assert.ok(res.text.includes('404') || res.text.includes('Not Found'));
+        }
+    });
+
+    test('Unknown paths return 404 (unrestricted SPA catch-all is resolved)', async () => {
+        const unknownPaths = ['/random-route-99', '/login-admin', '/secure/verify', '/phishing-test'];
+        for (const url of unknownPaths) {
+            const res = await get(url);
+            assert.strictEqual(res.status, 404, `Expected 404 for ${url}, got ${res.status}`);
+            assert.ok(res.text.includes('404') || res.text.includes('Not Found'));
+        }
+    });
+
+    test('API Health endpoint (GET /api/health) returns 200 OK', async () => {
+        const res = await get('/api/health');
+        assert.strictEqual(res.status, 200);
+        const data = JSON.parse(res.text);
+        assert.strictEqual(data.success, true);
+        assert.strictEqual(data.status, 'OK');
+    });
+
+    test('Unknown API endpoint (GET /api/nonexistent) returns 404 JSON', async () => {
+        const res = await get('/api/nonexistent');
+        assert.strictEqual(res.status, 404);
+        const data = JSON.parse(res.text);
+        assert.strictEqual(data.success, false);
+        assert.strictEqual(data.message, 'API route not found');
+    });
+
+    test('Socket.IO endpoint responds correctly', async () => {
+        const res = await get('/socket.io/?EIO=4&transport=polling');
+        assert.strictEqual(res.status, 200);
+        assert.ok(res.text.includes('sid')); // Polling handshake returns session id
+    });
+});

@@ -53,10 +53,13 @@ const fetchMeetingInfo = async (meetingId) => {
 
         if (!data.success) {
             resetMeetingMeta();
+            showError(data.message || 'Meeting not found or has expired. Please check the Meeting ID.');
+            document.getElementById('joinBtn').disabled = true;
             return;
         }
 
         meetingInfo = data;
+        hideError();
 
         // Show meta card
         const meta = document.getElementById('meetingMeta');

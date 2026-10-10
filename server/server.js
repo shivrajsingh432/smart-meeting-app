@@ -14,7 +14,9 @@ require('dotenv').config();
 
 // ── Connect to MongoDB ────────────────────────────────────────────────────────
 const connectDB = require('./config/db');
-connectDB();
+if (process.env.NODE_ENV !== 'test') {
+    connectDB();
+}
 
 // ── Import Routes ─────────────────────────────────────────────────────────────
 const authRoutes = require('./routes/auth');
@@ -135,14 +137,58 @@ app.get('/api/health', (req, res) => {
     });
 });
 
-// ── SPA Catch-all ─────────────────────────────────────────────────────────────
-// Serve join.html for /join/:meetingId routes
-app.use((req, res, next) => {
-    if (req.path.startsWith('/api')) return next();
-    if (req.path.startsWith('/join/')) {
-        return res.sendFile(path.join(__dirname, '..', 'public', 'join.html'));
+// ── Explicit Frontend & Meeting Routes ─────────────────────────────────────────
+const { isValidMeetingId } = require('./utils/meetingUtils');
+
+// Direct clean URL routes for key application pages
+app.get(['/privacy', '/privacy.html'], (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'privacy.html'));
+});
+
+app.get(['/terms', '/terms.html'], (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'terms.html'));
+});
+
+app.get(['/login', '/login.html'], (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'login.html'));
+});
+
+app.get(['/register', '/register.html'], (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'register.html'));
+});
+
+app.get(['/dashboard', '/dashboard.html'], (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'dashboard.html'));
+});
+
+app.get(['/join', '/join.html'], (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'join.html'));
+});
+
+app.get('/meeting.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'meeting.html'));
+});
+
+app.get('/summary.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'summary.html'));
+});
+
+// Explicit meeting join route with ID validation
+app.get('/join/:meetingId', (req, res) => {
+    const { meetingId } = req.params;
+    if (!isValidMeetingId(meetingId)) {
+        return res.status(404).sendFile(path.join(__dirname, '..', 'public', '404.html'));
     }
-    res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, '..', 'public', 'join.html'));
+});
+
+// ── 404 Handler for Unknown Routes ───────────────────────────────────────────
+// Non-existent API and page routes return an explicit 404 rather than the homepage
+app.use((req, res) => {
+    if (req.path.startsWith('/api')) {
+        return res.status(404).json({ success: false, message: 'API route not found' });
+    }
+    res.status(404).sendFile(path.join(__dirname, '..', 'public', '404.html'));
 });
 
 // ── Global Error Handler ──────────────────────────────────────────────────────
@@ -160,16 +206,18 @@ app.use((err, req, res, next) => {
 socketHandler(io);
 
 // ── Start Server ──────────────────────────────────────────────────────────────
-server.listen(PORT, () => {
-    const baseUrl = process.env.APP_URL || `http://localhost:${PORT}`;
-    console.log('');
-    console.log('╔══════════════════════════════════════════════╗');
-    console.log('║  🚀 Meetrix – Server Started  v2               ║');
-    console.log(`║  📡 URL: ${baseUrl.padEnd(35)}║`);
-    console.log(`║  🌱 Environment: ${(process.env.NODE_ENV || 'development').padEnd(27)}║`);
-    console.log('╚══════════════════════════════════════════════╝');
-    console.log('');
-});
+if (process.env.NODE_ENV !== 'test') {
+    server.listen(PORT, () => {
+        const baseUrl = process.env.APP_URL || `http://localhost:${PORT}`;
+        console.log('');
+        console.log('╔══════════════════════════════════════════════╗');
+        console.log('║  🚀 Meetrix – Server Started  v2               ║');
+        console.log(`║  📡 URL: ${baseUrl.padEnd(35)}║`);
+        console.log(`║  🌱 Environment: ${(process.env.NODE_ENV || 'development').padEnd(27)}║`);
+        console.log('╚══════════════════════════════════════════════╝');
+        console.log('');
+    });
+}
 
 process.on('unhandledRejection', (reason) => {
     console.error(`[${new Date().toISOString()}] Unhandled Rejection:`, reason);

@@ -106,7 +106,7 @@
         <div class="feature-card glass-card">
           <div class="feature-icon">🎤</div>
           <h3>AI Transcription</h3>
-          <p>Automatic speech-to-text powered by OpenAI Whisper. Every word captured, every speaker identified.</p>
+          <p>Speech-to-text transcription utilizing the open-source Whisper model (via Hugging Face API) and the Web Speech API. Real-time captions with speaker attribution.</p>
         </div>
         <div class="feature-card glass-card">
           <div class="feature-icon">🧠</div>
@@ -142,20 +142,20 @@
     <div class="container">
       <div class="stats-grid">
         <div class="stat-card glass-card">
-          <div class="stat-value text-gradient">99%</div>
-          <div class="stat-label">Transcription Accuracy</div>
+          <div class="stat-value text-gradient">P2P</div>
+          <div class="stat-label">WebRTC Direct Media</div>
         </div>
         <div class="stat-card glass-card">
-          <div class="stat-value text-gradient">HD</div>
-          <div class="stat-label">Video Quality</div>
+          <div class="stat-value text-gradient">Real-Time</div>
+          <div class="stat-label">Socket.IO Signaling</div>
         </div>
         <div class="stat-card glass-card">
-          <div class="stat-value text-gradient">&lt;1s</div>
-          <div class="stat-label">Latency</div>
+          <div class="stat-value text-gradient">AI Models</div>
+          <div class="stat-label">Whisper &amp; BART</div>
         </div>
         <div class="stat-card glass-card">
-          <div class="stat-value text-gradient">∞</div>
-          <div class="stat-label">Participants</div>
+          <div class="stat-value text-gradient">24h TTL</div>
+          <div class="stat-label">Auto-Expire Storage</div>
         </div>
       </div>
     </div>
@@ -169,7 +169,14 @@
           <div class="navbar-logo">🎥</div>
           <span class="navbar-title">Meetrix</span>
         </a>
-        <p class="footer-copy">© 2026 Meetrix.</p>
+        <div class="footer-links" style="display: flex; gap: 18px; font-size: 0.9rem;">
+          <a href="/privacy.html" style="color: var(--text-secondary); text-decoration: underline;">Privacy Policy</a>
+          <a href="/terms.html" style="color: var(--text-secondary); text-decoration: underline;">Terms of Service</a>
+        </div>
+        <p class="footer-copy">© 2026 Meetrix. Independent open-source project.</p>
+      </div>
+      <div style="margin-top: 16px; font-size: 0.8rem; color: var(--text-muted); text-align: center; border-top: 1px solid var(--glass-border); padding-top: 12px;">
+        Meetrix is an independent open-source video conferencing project and is not affiliated with, sponsored by, or endorsed by OpenAI, Zoom Video Communications, or Google LLC.
       </div>
     </div>
   </footer>

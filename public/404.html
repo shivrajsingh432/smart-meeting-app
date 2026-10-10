@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 – Page Not Found – Meetrix</title>
+  <meta name="description" content="The requested page or meeting could not be found." />
+  <link rel="stylesheet" href="/css/main.css" />
+  <style>
+    .not-found-wrapper {
+      min-height: calc(100vh - 160px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .not-found-card {
+      max-width: 520px;
+      width: 100%;
+      text-align: center;
+      padding: 48px 32px;
+    }
+
+    .not-found-code {
+      font-size: 5rem;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    .not-found-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .not-found-desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Animated Background -->
+  <div class="bg-animated">
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a href="/" class="navbar-brand">
+      <div class="navbar-logo">🎥</div>
+      <span class="navbar-title">Meetrix</span>
+    </a>
+    <div class="navbar-spacer"></div>
+    <div class="navbar-actions">
+      <a href="/" class="btn btn-secondary btn-sm">Home</a>
+      <a href="/login.html" class="btn btn-secondary btn-sm">Login</a>
+    </div>
+  </nav>
+
+  <div class="not-found-wrapper">
+    <div class="glass-card not-found-card">
+      <div class="not-found-code text-gradient">404</div>
+      <h1 class="not-found-title">Page or Meeting Not Found</h1>
+      <p class="not-found-desc">
+        The link you followed may be incorrect, expired, or the meeting ID format is invalid. Please verify the URL or return to the homepage.
+      </p>
+      <div style="display: flex; gap: 12px; justify-content: center;">
+        <a href="/" class="btn btn-primary">← Return to Homepage</a>
+        <a href="/join.html" class="btn btn-secondary">Join by Meeting ID</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="flex items-center justify-between" style="flex-wrap: wrap; gap: 16px;">
+        <a href="/" class="navbar-brand">
+          <div class="navbar-logo">🎥</div>
+          <span class="navbar-title">Meetrix</span>
+        </a>
+        <div style="display: flex; gap: 16px; font-size: 0.9rem;">
+          <a href="/privacy.html" style="color: var(--text-secondary); text-decoration: underline;">Privacy Policy</a>
+          <a href="/terms.html" style="color: var(--text-secondary); text-decoration: underline;">Terms of Service</a>
+        </div>
+        <p class="footer-copy">© 2026 Meetrix. Independent open-source project.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
