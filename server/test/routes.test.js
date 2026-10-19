@@ -136,6 +136,67 @@ describe('Meetrix Security & Route Tests', () => {
         assert.strictEqual(data.message, 'API route not found');
     });
 
+    test('Robots.txt (GET /robots.txt) serves plain-text 200 with proper directives and sitemap link', async () => {
+        const res = await get('/robots.txt');
+        assert.strictEqual(res.status, 200);
+        const contentType = res.headers.get('content-type') || '';
+        assert.ok(contentType.includes('text/plain'), `Expected text/plain, got ${contentType}`);
+        assert.ok(res.text.includes('User-agent: *'));
+        assert.ok(res.text.includes('Allow: /'));
+        assert.ok(res.text.includes('Allow: /privacy.html'));
+        assert.ok(res.text.includes('Allow: /terms.html'));
+        assert.ok(res.text.includes('Disallow: /api/'));
+        assert.ok(res.text.includes('Sitemap: https://smart-meeting-app-3iw9.onrender.com/sitemap.xml'));
+        // Confirm no private meeting tokens or meeting room paths are exposed
+        assert.ok(!res.text.includes('meeting.html'));
+        assert.ok(!res.text.includes('token'));
+    });
+
+    test('Sitemap.xml (GET /sitemap.xml) serves well-formed XML with exactly three canonical public URLs', async () => {
+        const res = await get('/sitemap.xml');
+        assert.strictEqual(res.status, 200);
+        const contentType = res.headers.get('content-type') || '';
+        assert.ok(contentType.includes('xml'), `Expected xml content-type, got ${contentType}`);
+
+        // Validate well-formed XML declaration and schema namespace
+        assert.ok(res.text.startsWith('<?xml version="1.0" encoding="UTF-8"?>'), 'Missing XML declaration');
+        assert.ok(res.text.includes('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'), 'Missing urlset namespace');
+        assert.ok(res.text.trim().endsWith('</urlset>'), 'Sitemap must terminate with </urlset>');
+
+        // Validate well-formed matching tag counts
+        const countOccurrences = (str, sub) => (str.match(new RegExp(sub, 'g')) || []).length;
+        assert.strictEqual(countOccurrences(res.text, '<url>'), 3, 'Expected exactly 3 opening <url> tags');
+        assert.strictEqual(countOccurrences(res.text, '</url>'), 3, 'Expected exactly 3 closing </url> tags');
+        assert.strictEqual(countOccurrences(res.text, '<loc>'), 3, 'Expected exactly 3 opening <loc> tags');
+        assert.strictEqual(countOccurrences(res.text, '</loc>'), 3, 'Expected exactly 3 closing </loc> tags');
+
+        // Extract all <loc> URLs and verify exact match
+        const locMatches = [...res.text.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
+        assert.strictEqual(locMatches.length, 3, `Expected exactly 3 URLs, found ${locMatches.length}`);
+
+        const expectedUrls = [
+            'https://smart-meeting-app-3iw9.onrender.com/',
+            'https://smart-meeting-app-3iw9.onrender.com/privacy.html',
+            'https://smart-meeting-app-3iw9.onrender.com/terms.html',
+        ];
+        assert.deepStrictEqual(locMatches.sort(), expectedUrls.sort());
+
+        // Confirm login-only, meeting rooms, tokens, and session pages are NOT included
+        assert.ok(!res.text.includes('dashboard.html'));
+        assert.ok(!res.text.includes('meeting.html'));
+        assert.ok(!res.text.includes('summary.html'));
+        assert.ok(!res.text.includes('login.html'));
+        assert.ok(!res.text.includes('register.html'));
+    });
+
+    test('Regression: Variations of robots and sitemap return 404', async () => {
+        const paths = ['/robots', '/robots.html', '/sitemap', '/sitemap.html', '/sitemap.txt'];
+        for (const p of paths) {
+            const res = await get(p);
+            assert.strictEqual(res.status, 404, `Expected 404 for ${p}, got ${res.status}`);
+        }
+    });
+
     test('Socket.IO endpoint responds correctly', async () => {
         const res = await get('/socket.io/?EIO=4&transport=polling');
         assert.strictEqual(res.status, 200);

@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Allow: /privacy.html
+Allow: /terms.html
+Disallow: /api/
+
+Sitemap: https://smart-meeting-app-3iw9.onrender.com/sitemap.xml
